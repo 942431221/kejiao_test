@@ -1,0 +1,26 @@
+version: '2'
+services:
+  db:
+    restart: always
+    build:
+      context: ./build-mysql
+      dockerfile: Dockerfile
+    image: mydb:1.0.1
+    container_name: mydb
+    environment:
+      - MYSQL_ROOT_PASSWORD=mysql
+    ports:
+      - "3308:3306"
+    volumes:
+      - ~/Data/mysql:/var/lib/mysql
+  web:
+    restart: always
+    build:
+      context: ./build-flask    
+      dockerfile: Dockerfile  
+    image: myweb:1.0.1   
+    container_name: myweb
+    ports:
+      - "5000:5000"
+    links:
+      - db:flask
